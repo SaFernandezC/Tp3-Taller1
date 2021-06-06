@@ -1,7 +1,9 @@
 #ifndef _SERVER_H
 #define _SERVER_H
 
+#include <iostream>
 #include <vector>
+#include "string"
 #include "Accepter.h"
 #include "Socket.h"
 #include "Player.h"

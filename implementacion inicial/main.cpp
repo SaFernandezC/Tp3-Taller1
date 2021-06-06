@@ -13,5 +13,8 @@ int main(int argc, char const *argv[]) {
 
   Server server(port);
 
+  server.run();
+
+
   return 0;
 }
