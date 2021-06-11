@@ -1,10 +1,10 @@
-#ifndef _PLAYER_H
-#define _PLAYER_H
+#ifndef _JUGADOR_H
+#define _JUGADOR_H
 
 #include "Socket.h"
 #include "Thread.h"
 
-class Player: public Thread{
+class Jugador: public Thread{
 
   private:
     Socket player_socket;
@@ -12,11 +12,11 @@ class Player: public Thread{
 
   public:
 
-    Player(Socket player_sock);
+    Jugador(Socket player_sock);
 
     virtual void run() override;
 
-    ~Player();
+    ~Jugador();
 
 
 

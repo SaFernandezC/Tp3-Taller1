@@ -3,7 +3,7 @@
 Organizador::Organizador(){}
 
 void Organizador::addPlayer(Socket player_socket){ //VVER SI RECIBO SOCKET O SOCKET&&
-  jugadores.push_back(new Player(std::move(player_socket)));
+  jugadores.push_back(new Jugador(std::move(player_socket)));
 }
 
 Organizador::~Organizador(){

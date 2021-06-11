@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Socket.h"
+#include "Protocol.h"
 
 int main(int argc, char const *argv[]) {
   if (argc != 3) {
@@ -11,13 +11,8 @@ int main(int argc, char const *argv[]) {
   std::string host(argv[1]);
   std::string port(argv[2]);
 
+  Protocol protocolo(host, port);
 
-  Socket client;
-
-
-  client.connect(host, port);
-
-  client.shutdown();
-  client.close();
+  
   return 0;
 }

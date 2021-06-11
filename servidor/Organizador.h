@@ -2,14 +2,16 @@
 #define _ORGANIZADOR_H
 
 // #include "Thread.h"
-#include "Player.h"
+#include "Jugador.h"
 #include "Socket.h"
+#include "MonitorPartidas.h"
 #include <vector>
 
 class Organizador{
 
   private:
-      std::vector<Player*> jugadores;
+      std::vector<Jugador*> jugadores;
+      MonitorPartidas monitor_partidas;
       // MonitorPartidas monitor; //Lista de partidas
       //Y lugo cada jugador deberia tener una partida creo
 

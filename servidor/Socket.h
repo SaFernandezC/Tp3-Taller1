@@ -27,8 +27,8 @@ class Socket{
 
     void shutdown();
 
-    int send_msg();
-    int recv_msg();
+    int send_msg(const char* buf, const int& size);
+    int recv_msg(char* buf, const int& size);
 
     Socket(Socket&& other);
     Socket& operator=(Socket&& other);

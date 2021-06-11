@@ -14,6 +14,8 @@ Socket::Socket(){}
 
 Socket::Socket(int fd):fd(fd){}
 
+/*-----------------------------------------------------------*/
+
 int Socket::bind(const std::string& port){
 
   int status;
@@ -101,6 +103,57 @@ void Socket::connect(const std::string& host,const std::string& service){
     std::cout << "Me conecte a " << host << " en el puerto " << service << '\n';
     return;
 }
+
+
+/*-----------------------------------------------------------*/
+
+int Socket::send_msg(const char* buf, const int& size){
+  int sent = 0;
+  bool valid_socket = true;
+
+  while (sent < size && valid_socket) {
+     int bytes = send(fd, &buf[sent], size-sent, MSG_NOSIGNAL);
+
+     if (bytes == 0) {
+        valid_socket = false;
+     } else if (bytes == -1) {
+        valid_socket = false;
+     } else {
+        sent += bytes;
+     }
+  }
+
+  if (valid_socket) {
+     return sent;
+  } else {
+     throw SocketException("Error al enviar mensaje de %i bytes\n", size, __LINE__);
+  }
+}
+
+int Socket::recv_msg(char* buf, const int& size){
+  int received = 0;
+  bool valid_socket = true;
+
+  while (received < size && valid_socket) {
+    int bytes = recv(fd, &buf[received], size-received, 0);
+
+    if (bytes == 0) { // nos cerraron el socket :(
+      valid_socket = false;
+    } else if (bytes == -1) { // hubo un error >(
+      valid_socket = false;
+    } else {
+      received += bytes;
+    }
+  }
+
+  if (valid_socket) {
+    return received;
+  } else {
+    throw SocketException("Error al recibir mensaje de %i bytes\n", size, __LINE__);
+  }
+}
+
+/*-----------------------------------------------------------*/
 
 void Socket::shutdown(){
   ::shutdown(fd, SHUT_RDWR);
