@@ -23,12 +23,14 @@ class MonitorPartidas{
 
     Partida* agregarPartida(std::string& nombre);
 
+    bool existePartida(std::string& nombre);
+
     Partida* buscarPartida(const std::string& nombre); //Ver si uso puntero o referencia
 
     std::string listaPartidas();
 
     void eliminarPartida(const std::string& nombre);
-    
+
     ~MonitorPartidas();
 
 

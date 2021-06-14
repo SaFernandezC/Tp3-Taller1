@@ -3,40 +3,82 @@
 
 #include <iostream>
 #include <string>
+#include "SocketException.h"
 
 class Socket{
 
   private:
     int fd;
 
-    //Creo un socket con un file descriptor (la uso en accept)
-    Socket(int fd);
-
   public:
+    /*
+    * Constructor
+    */
     Socket();
 
+    /*
+    * Constructor
+    */
     void connect(const std::string& host,const std::string& service);
 
-    int bind(const std::string& port);
+    /*
+    * Constructor
+    */
+    void bind(const std::string& port);
 
-    int listen();
+    /*
+    * Constructor
+    */
+    void listen();
 
+    /*
+    * Constructor
+    */
     Socket accept() const;
 
+    /*
+    * Constructor
+    */
     void close();
 
+    /*
+    * Constructor
+    */
     void shutdown();
 
+    /*
+    * Constructor
+    */
     int sendMsg(const char* buf, const int& size);
+
+    /*
+    * Constructor
+    */
     int recvMsg(char* buf, const int& size);
 
+    /*
+    * Constructor
+    */
     Socket(Socket&& other);
+
+    /*
+    * Constructor
+    */
     Socket& operator=(Socket&& other);
 
-    Socket(const Socket&); //BORRAR ESTO SI O SI
-    Socket& operator=(const Socket&);
-
+    /*
+    * Destructor
+    */
     ~Socket();
+
+  private:
+    /*
+    * Constructor, asigna al socket el fd recibido
+    * como parametro
+    */
+    Socket(int fd);
+    Socket(const Socket&) = delete;
+    Socket& operator=(const Socket&) = delete;
 
 
 

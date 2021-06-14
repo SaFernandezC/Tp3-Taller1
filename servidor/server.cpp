@@ -14,6 +14,7 @@ int main(int argc, char const *argv[]) {
   Listener listener(port);
   listener.start();
 
+
   std::string command = "";
   std::cin >> command;
   while (command.compare("q") != 0) {
@@ -22,7 +23,5 @@ int main(int argc, char const *argv[]) {
   }
 
   listener.stop();
-  listener.join(); //Ver si paso esto al destructor del listener asi es RAII
-
   return 0;
 }

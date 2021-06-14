@@ -13,10 +13,13 @@ int main(int argc, char const *argv[]) {
   try{
     Cliente cliente(host, port);
     cliente.run();
-  }catch(std::exception& e){
-    printf("Error en el cliente en linea");//Cambiar por syslog o exception
+  } catch (const SocketException& e){
+    std::cout << e.what() << std::endl;
+  } catch (std::exception& e){
+    std::cout << e.what() << std::endl;
+  } catch (...){
+    std::cout << "Error desconocido" << std::endl;
   }
-
 
   return 0;
 }

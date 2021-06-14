@@ -46,18 +46,15 @@ void Protocolo::recvTipoAccion(Socket& socket, char& tipo_accion){
   // std::cout << "Recivo Tipo de accion: " << tipo_accion<< '\n';
 }
 
-void Protocolo::recvJugada(Socket& socket, char& fil, char& col){
+void Protocolo::recvJugada(Socket& socket, char& col, char& fil){
   char jugada;
   socket.recvMsg(&jugada, 1);
 
   fil = (jugada & PLANTILLA);
   col = (jugada >> 4);
-
-
-
 }
 
-void Protocolo::enviarJugada(Socket& socket, char& fil, char& col){
+void Protocolo::enviarJugada(Socket& socket, char& col, char& fil){
 
   fil = fil - DIFERENCIA;
   col = col - DIFERENCIA;
@@ -66,6 +63,7 @@ void Protocolo::enviarJugada(Socket& socket, char& fil, char& col){
   char mensaje = col | fil;
 
   socket.sendMsg(&mensaje, 1);
+  // std::cout << "Envio la jugada "<< col << fil<< '\n';
 }
 
 

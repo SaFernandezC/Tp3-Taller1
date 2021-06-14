@@ -21,8 +21,8 @@ class Protocolo{
     void enviarMensaje(Socket& socket, const std::string& mensaje);
     void recvMensaje(Socket& socket, std::string& mensaje);
 
-    void enviarJugada(Socket& socket, char& fil, char& col);
-    void recvJugada(Socket& socket, char& fil, char& col);
+    void enviarJugada(Socket& socket, char& col, char& fil);
+    void recvJugada(Socket& socket, char& col, char& fil);
 
     ~Protocolo();
 

@@ -1,12 +1,7 @@
 #include "Cliente.h"
 
 Cliente::Cliente(const std::string& host, const std::string& port){
-  try{
-    client_socket.connect(host, port);
-    conectado = true;
-  } catch(std::exception& e){ //Ver si cambio exception por socketException
-    std::cout << e.what() << std::endl; //Cambiar por un Syslog
-  }
+  client_socket.connect(host, port);
 }
 
 void Cliente::conectarAPartida(Protocolo& protocolo, Analizador& analizador){
@@ -23,10 +18,16 @@ void Cliente::conectarAPartida(Protocolo& protocolo, Analizador& analizador){
       protocolo.enviarTipoAccion(client_socket, accion);
     }
 
-    if(accion == CODIGO_CREAR || accion == CODIGO_UNIRSE){
-        std::string nombre = analizador.obtenerNombre(jugada, 6); //Catchear excepcion
+    std::string nombre;
+
+    if(accion == CODIGO_CREAR){
+        nombre = analizador.obtenerNombre(jugada, 6); //Catchear excepcion
         protocolo.enviarMensaje(client_socket, nombre);
         conectado = true;
+    } else if (accion == CODIGO_UNIRSE) {
+      nombre = analizador.obtenerNombre(jugada, 7); //Catchear excepcion
+      protocolo.enviarMensaje(client_socket, nombre);
+      conectado = true;
     } else if (accion == CODIGO_LISTAR){
       std::string lista;
       protocolo.recvMensaje(client_socket, lista);
@@ -55,9 +56,9 @@ void Cliente::jugar(Protocolo& protocolo, Analizador& analizador){
     if (accion == CODIGO_JUGAR) {
       protocolo.enviarTipoAccion(client_socket, accion);
 
-      char fila, col;
-      analizador.obtenerFilaYCol(jugada, fila, col);
-      protocolo.enviarJugada(client_socket, fila, col);
+      char fil, col; //Agregar chequeo para validar
+      analizador.obtenerFilaYCol(jugada, col, fil);
+      protocolo.enviarJugada(client_socket, col, fil);
 
       protocolo.recvMensaje(client_socket, tablero);
       std::cout << tablero;
@@ -74,7 +75,7 @@ void Cliente::run(){
   Protocolo protocolo;
 
   conectarAPartida(protocolo, analizador);
-  
+
   jugar(protocolo, analizador);
 }
 

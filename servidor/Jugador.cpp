@@ -8,13 +8,11 @@ bool Jugador::crear_partida(Protocolo& protocolo){
   std::string nombre;
   protocolo.recvMensaje(socket_jugador, nombre);
 
-  try{
-    partidaActual = monitor_partidas.agregarPartida(nombre);
-  } catch(...){//Aca va la excepcion de nombre ya existente
-    //Envio Mensaje de error
-    std::cout << "La partida ya existe" << '\n';
+  if(monitor_partidas.existePartida(nombre)){
     return false;
   }
+
+  partidaActual = monitor_partidas.agregarPartida(nombre);
   tipoJugador = JUGADOR_X;
   return true;
 }
@@ -23,13 +21,11 @@ bool Jugador::unirse_partida(Protocolo& protocolo){
   std::string nombre;
   protocolo.recvMensaje(socket_jugador, nombre);
 
-  try{
-    partidaActual = monitor_partidas.buscarPartida(nombre); //Separar en existe y luego busco
-  } catch(...){//Aca va la excepcion de nombre ya existente
-    //Envio Mensaje de error
-    std::cout << "No existe partida" << '\n';
+  if(monitor_partidas.existePartida(nombre) == false){
     return false;
   }
+
+  partidaActual = monitor_partidas.buscarPartida(nombre);
   tipoJugador = JUGADOR_O;
   return true;
 }
@@ -42,7 +38,6 @@ void Jugador::listar_partidas(Protocolo& protocolo) {
 void Jugador::run(){
 
   Protocolo protocolo;
-  // std::string nombrePartida;
   bool en_partida = false;
 
   while(!en_partida){
@@ -58,21 +53,25 @@ void Jugador::run(){
     }
   }
 
+  std::string tablero;
+  tablero = partidaActual->obtenerTablero(tipoJugador);
 
-  // while(partidaActual->enJuego() == true){
-  //   std::string tablero = partidaActual->obtenerTablero();
-  //   protocolo.enviarMensaje(socket_jugador, tablero);
-  //
-  //   char tipo_accion;
-  //   char fil, col;
-  //
-  //   protocolo.recvTipoAccion(socket_jugador, tipo_accion); //PUEDE SER DIFERENTE DE CODIGO_JUGAR?
-  //   protocolo.recvJugada(socket_jugador, fil, col);
-  //
-  //   // std::cout << "Recibo Fila -> "  << (int)fil << "||| col -> " << (int)col<< '\n';
-  //   partidaActual->jugar(tipoJugador, fil, col);
-  // }
-  // monitor_partidas.eliminarPartida(nombrePartida);
+  while(partidaActual->enJuego() == true){
+    protocolo.enviarMensaje(socket_jugador, tablero);
+
+    char tipo_accion;
+    char col, fil;
+
+    protocolo.recvTipoAccion(socket_jugador, tipo_accion); //PUEDE SER DIFERENTE DE CODIGO_JUGAR?
+    protocolo.recvJugada(socket_jugador, col, fil);
+
+    partidaActual->jugar(tipoJugador, col, fil);
+    tablero = partidaActual->obtenerTablero(tipoJugador);
+  }
+
+  protocolo.enviarMensaje(socket_jugador, tablero);
+
+  // monitor_partidas.eliminarPartida(partidaActual->obtenerNombre());
   stop();
 }
 

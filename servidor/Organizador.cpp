@@ -13,7 +13,10 @@ void Organizador::limpiarJugadoresMuertos(){
 }
 
 void Organizador::agregarJugador(Socket player_socket){
-  Jugador* jugador = new Jugador(std::move(player_socket), monitor_partidas);  //Ver que onda si falla el new
+  Jugador* jugador = new Jugador(std::move(player_socket), monitor_partidas);
+  if (!jugador){
+    throw ServerException("Error en el new de un nuevo jugador");
+  }
   jugador->start();
   jugadores.push_back(jugador);
   limpiarJugadoresMuertos();

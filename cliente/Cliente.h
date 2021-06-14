@@ -10,7 +10,6 @@ class Cliente{
 
   private:
     Socket client_socket;
-    bool conectado;
 
   public:
     Cliente(const std::string& host, const std::string& port);

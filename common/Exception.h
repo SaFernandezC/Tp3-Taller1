@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <errno.h>
-#include <cstdio> //Ver si tengo que sacar alguno de estos include
+#include <cstdio>
 #include <typeinfo>
 #include <cstdarg>
 #include <string.h>

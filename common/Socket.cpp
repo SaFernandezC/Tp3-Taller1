@@ -7,16 +7,13 @@
 #include <unistd.h> //Close la utiliza
 #include <arpa/inet.h> // inet_ntop -> Convierte addr de bin a text
 
-#include "SocketException.h"
-
-
 Socket::Socket(){}
 
 Socket::Socket(int fd):fd(fd){}
 
 /*-----------------------------------------------------------*/
 
-int Socket::bind(const std::string& port){
+void Socket::bind(const std::string& port){
 
   int status;
 
@@ -28,80 +25,81 @@ int Socket::bind(const std::string& port){
 
   status = getaddrinfo(NULL, port.c_str(), &hints, &server_info);
   if (status != 0){
-    return -1;
+    throw SocketException("Error en la funcion getaddrinfo. [%s]:%i\n", __FILE__,__LINE__);
   }
 
   fd = socket(server_info->ai_family, server_info->ai_socktype, server_info->ai_protocol);
   if (fd  == -1){
     freeaddrinfo(server_info);
-    return -1;
+    throw SocketException("Error en la funcion socket. [%s]:%i\n", __FILE__,__LINE__);
   }
 
   int val = 1;
   status = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
   if (status == -1){
     freeaddrinfo(server_info);
-    return status;
+    throw SocketException("Error en la funcion setsockopt previo al bind. [%s]:%i\n", __FILE__,__LINE__);
   }
 
   status = ::bind(fd, server_info->ai_addr, server_info->ai_addrlen);
-  if (status == -1){
-    ::close(fd);
-    freeaddrinfo(server_info);
-    return status;
-  }
-
   freeaddrinfo(server_info);
 
-
-  return 0;
+  if (status == -1){
+    ::close(fd);
+    throw SocketException("Error en la funcion bind. [%s]:%i\n", __FILE__,__LINE__);
+  }
 }
 
-int Socket::listen(){
-
+void Socket::listen(){
   int status = ::listen(fd, 10); //Ver ese 10
   if (status == -1){
     ::close(fd);
+    throw SocketException("Error al crear la cola de espera. [%s]:%i\n", __FILE__,__LINE__);
   }
-  return status;
 }
 
 Socket Socket::accept() const{
   int accepted_fd = ::accept(fd, NULL, NULL);
-  if (accepted_fd == -1) {
-    throw SocketException("Error al intentar aceptar un cliente -> fd: %d\n", accepted_fd, __LINE__);
+  if(errno == EINVAL){
+    throw SocketException("Mientras se esperaba para hacer un accept se hizo un shutdown del socket. [%s]:%i\n",__FILE__,__LINE__);
   }
-  std::cout << "Se acepto un cliente con el fd: " << accepted_fd << std::endl;
+  if (accepted_fd == -1) {
+    throw SocketException("Error al intentar aceptar un cliente. [%s]:%i\n",__FILE__,__LINE__);
+  }
   Socket accepted(accepted_fd);
   return accepted;
 }
 
 void Socket::connect(const std::string& host,const std::string& service){
   struct addrinfo hints, *server_info;
-
   memset(&hints, 0, sizeof(struct addrinfo));
 
   int result = getaddrinfo(host.c_str(), service.c_str(), &hints, &server_info);
   if (result != 0){
-    return;
+    throw SocketException("Error en la funcion getaddrinfo\n", __FILE__,__LINE__);
   }
 
-  fd = socket(server_info->ai_family, server_info->ai_socktype,
-    server_info->ai_protocol);
-    if (fd == -1){
-      freeaddrinfo(server_info);
-      return;
-    }
+  bool conectado = false;
+  int status;
+  addrinfo* ptr;
 
-    int status = ::connect(fd, server_info->ai_addr, server_info->ai_addrlen);
-    if (status == -1){
-      freeaddrinfo(server_info);
-      return;
+  for (ptr = server_info; ptr != NULL && conectado == false; ptr = ptr->ai_next) {
+    fd = socket(server_info->ai_family, server_info->ai_socktype,server_info->ai_protocol);
+    if (fd != -1){
+      status = ::connect(fd, server_info->ai_addr, server_info->ai_addrlen);
+      if(status == -1){
+        ::close(fd);
+      } else{
+        conectado = true;
+      }
     }
+  }
 
-    freeaddrinfo(server_info);
-    std::cout << "Me conecte a " << host << " en el puerto " << service << '\n';
-    return;
+  freeaddrinfo(server_info);
+  if(!conectado){
+    fd = -1;
+    throw SocketException("Error al intentar conectarse al servidor\n", __FILE__,__LINE__);
+  }
 }
 
 
@@ -126,7 +124,7 @@ int Socket::sendMsg(const char* buf, const int& size){
   if (valid_socket) {
      return sent;
   } else {
-     throw SocketException("Error al enviar mensaje de %i bytes\n", size, __LINE__);
+     throw SocketException("Error al enviar mensaje de %i bytes. [%s]:%i\n", size, __FILE__, __LINE__);
   }
 }
 
@@ -149,7 +147,7 @@ int Socket::recvMsg(char* buf, const int& size){
   if (valid_socket) {
     return received;
   } else {
-    throw SocketException("Error al recibir mensaje de %i bytes\n", size, __LINE__);
+    throw SocketException("Error al recibir mensaje de %i bytes. [%s]:%i\n", size, __FILE__, __LINE__);
   }
 }
 

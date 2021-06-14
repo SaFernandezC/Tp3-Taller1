@@ -23,7 +23,7 @@ class Partida{
 
     bool enJuego();
 
-    std::string obtenerTablero();
+    std::string obtenerTablero(const char& tipoJugador);
 
     void jugar(char& tipo_jugador, char fil, char col);
 

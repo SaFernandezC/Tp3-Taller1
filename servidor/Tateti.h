@@ -10,7 +10,9 @@ class Tateti{
 
   private:
     char tablero[3][3];
-    bool ganador;
+    char ganador;
+    bool juegoTerminado;
+    int posicionesLibres;
 
 
   public:
@@ -19,16 +21,19 @@ class Tateti{
 
     void realizarJugada(char& caracter, int fil, int col);
 
-    std::string obtenerTablero();
+    std::string obtenerTablero(const char& tipoJugador);
 
-    bool hay_ganador(){
-      return ganador;
-    }
+    bool estaTerminado();
 
     ~Tateti();
 
   private:
-    void construirTablero(std::string& auxiliar);
+    void construirTablero(std::string& tablero_aux);
+    void agregarResultado(std::string& tablero_aux, const char& tipoJugador);
+    void chequearGanador(int& fil, int& col);
+    void chequearDiagonales();
+    void chequearCol(int& col);
+    void chequearFil(int& fil);
 };
 
 #endif

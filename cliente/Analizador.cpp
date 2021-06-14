@@ -1,7 +1,7 @@
 #include "Analizador.h"
 
-#define POS_FILA 6
-#define POS_COL 8
+#define POS_FILA 8
+#define POS_COL 6
 
 Analizador::Analizador(){}
 
@@ -21,10 +21,10 @@ char Analizador::obtenerAccion(const std::string& jugada){
   return CODIGO_NO_VALIDO;
 }
 
-void Analizador::obtenerFilaYCol(const std::string& jugada, char& fila, char& col){
+void Analizador::obtenerFilaYCol(const std::string& jugada, char& col, char& fil){
   try{
-    fila = jugada.at(POS_FILA);
     col = jugada.at(POS_COL);
+    fil = jugada.at(POS_FILA);
   } catch(...){
     std::cout << "Jugada Invalida, no se puede obtener fila y col" << '\n'; //CAMBIARRRRRRRRRRRRRRRRRRRRRR
   }
@@ -35,7 +35,14 @@ std::string Analizador::obtenerNombre(const std::string& jugada, const int& pos)
 }
 
 bool Analizador::partidaFinalizada(const std::string& tablero){
-  return true;
+
+  if (tablero.find("Ganaste!") != std::string::npos ||
+      tablero.find("Perdiste!") != std::string::npos ||
+      tablero.find("empate") != std::string::npos) {
+    return true;
+  }
+
+  return false;
 }
 
 Analizador::~Analizador(){}
