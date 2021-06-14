@@ -2,9 +2,7 @@
 
 
 
-MonitorPartidas::MonitorPartidas(){
-
-}
+MonitorPartidas::MonitorPartidas(){}
 
 Partida* MonitorPartidas::agregarPartida(std::string& nombre){
   std::lock_guard<std::mutex> lock(mtx);
@@ -13,7 +11,7 @@ Partida* MonitorPartidas::agregarPartida(std::string& nombre){
 
   try{
     nuevaPartida = partidas.at(nombre);
-  }catch(...){ //Si cattchea una excepcion es que ni existe la partida;
+  }catch(...){ //Si catchea una excepcion es que ni existe la partida;
     nuevaPartida = new Partida();
     partidas[nombre] = nuevaPartida;
     return nuevaPartida;
@@ -38,8 +36,24 @@ Partida* MonitorPartidas::buscarPartida(const std::string& nombre){
   return partida;
 }
 
-void MonitorPartidas::eliminarPartida(){
+std::string MonitorPartidas::listaPartidas(){
+  std::lock_guard<std::mutex> lock(mtx);
+  std::map<std::string, Partida*>::const_iterator it;
 
+  std::string lista = "Partidas:";
+
+  for (it = partidas.begin(); it != partidas.end(); ++it){
+    lista += "\n";
+    lista += " - ";
+    lista += it->first;
+  }
+  return lista;
+}
+
+void MonitorPartidas::eliminarPartida(const std::string& nombre){
+  std::lock_guard<std::mutex> lock(mtx);
+  delete(partidas[nombre]);
+  partidas.erase(nombre);
 }
 
 

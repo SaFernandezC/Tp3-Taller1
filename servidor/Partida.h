@@ -11,25 +11,26 @@ class Partida{
 
   private:
     std::mutex mtx;
-    std::condition_variable cambio_turno;
+    std::condition_variable cambioTurno;
+    char turno;
     int jugadores_conectados;
+    bool jugando;
     Tateti juego;
 
   public:
 
     Partida();
 
-    ~Partida();
-    
-    //
-    // Partida(Partida&& other){}
-    //
-    // Partida& operator=(Partida&& other){
-    //   return *this;
-    // }
-    // Partida(const Partida&)=default;
-    // Partida& operator=(const Partida&)=default;
+    bool enJuego();
 
+    std::string obtenerTablero();
+
+    void jugar(char& tipo_jugador, char fil, char col);
+
+    ~Partida();
+
+  private:
+    void cambiarTurno(const char& tipo_jugador);
 };
 
 #endif

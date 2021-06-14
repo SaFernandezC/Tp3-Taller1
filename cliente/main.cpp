@@ -1,6 +1,5 @@
 #include <iostream>
-
-#include "Protocol.h"
+#include "Cliente.h"
 
 int main(int argc, char const *argv[]) {
   if (argc != 3) {
@@ -11,8 +10,13 @@ int main(int argc, char const *argv[]) {
   std::string host(argv[1]);
   std::string port(argv[2]);
 
-  Protocol protocolo(host, port);
+  try{
+    Cliente cliente(host, port);
+    cliente.run();
+  }catch(std::exception& e){
+    printf("Error en el cliente en linea");//Cambiar por syslog o exception
+  }
 
-  
+
   return 0;
 }

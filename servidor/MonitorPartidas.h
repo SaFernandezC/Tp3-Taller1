@@ -25,9 +25,13 @@ class MonitorPartidas{
 
     Partida* buscarPartida(const std::string& nombre); //Ver si uso puntero o referencia
 
-    void eliminarPartida();
+    std::string listaPartidas();
 
+    void eliminarPartida(const std::string& nombre);
+    
     ~MonitorPartidas();
+
+
 
 };
 

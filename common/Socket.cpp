@@ -107,7 +107,7 @@ void Socket::connect(const std::string& host,const std::string& service){
 
 /*-----------------------------------------------------------*/
 
-int Socket::send_msg(const char* buf, const int& size){
+int Socket::sendMsg(const char* buf, const int& size){
   int sent = 0;
   bool valid_socket = true;
 
@@ -130,7 +130,7 @@ int Socket::send_msg(const char* buf, const int& size){
   }
 }
 
-int Socket::recv_msg(char* buf, const int& size){
+int Socket::recvMsg(char* buf, const int& size){
   int received = 0;
   bool valid_socket = true;
 
@@ -156,11 +156,16 @@ int Socket::recv_msg(char* buf, const int& size){
 /*-----------------------------------------------------------*/
 
 void Socket::shutdown(){
-  ::shutdown(fd, SHUT_RDWR);
+  if (fd != -1){
+    ::shutdown(fd, SHUT_RDWR);
+  }
 }
 
 void Socket::close(){
-  ::close(fd);
+  if (fd != -1){
+    ::close(fd);
+    fd = -1;
+  }
 }
 
 Socket::Socket(Socket&& other){
@@ -168,7 +173,7 @@ Socket::Socket(Socket&& other){
     this->fd = other.fd;
     other.fd = -1;
   }
-  std::cout << "Constructor por moviemiento Socket" << '\n';
+  // std::cout << "Constructor por moviemiento Socket" << '\n';
 }
 
 Socket& Socket::operator=(Socket&& other){
@@ -176,18 +181,12 @@ Socket& Socket::operator=(Socket&& other){
     this->fd = other.fd;
     other.fd = -1;
   }
-  std::cout << "Asigno por moviemiento socket" << '\n';
-  return *this;
-}
-
-Socket::Socket(const Socket&){
-  std::cout << "Constructor por copia Socket" << '\n';
-}
-Socket& Socket::operator=(const Socket&){
-  std::cout << "Asigno por copia socket" << '\n';
+  // std::cout << "Asigno por moviemiento socket" << '\n';
   return *this;
 }
 
 Socket::~Socket(){
-  //Close? necesito if(fd == valid ) => close?
+  if(fd != -1){
+    ::close(fd);
+  }
 }

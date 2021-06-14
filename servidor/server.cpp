@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]) {
   }
 
   listener.stop();
-  listener.join();
+  listener.join(); //Ver si paso esto al destructor del listener asi es RAII
 
   return 0;
 }

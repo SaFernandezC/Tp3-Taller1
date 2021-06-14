@@ -2,14 +2,15 @@
 #define _LISTENER_H
 
 #include "Thread.h"
-#include "Socket.h"
+#include <atomic>
+#include "../common/Socket.h"
 #include "Organizador.h"
 
 class Listener: public Thread{
 
   private:
     Socket accepter;
-    bool keep_accepting;
+    std::atomic<bool> seguirAceptando;
     Organizador organizador;
 
 
