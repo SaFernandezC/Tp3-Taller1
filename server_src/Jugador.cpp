@@ -15,7 +15,7 @@ bool Jugador::crear_partida(Protocolo& protocolo){
   std::string nombre;
   protocolo.recvMensaje(socketJugador, nombre);
 
-  partidaActual = monitor_partidas.agregarPartidaSiNoExiste(nombre);
+  partidaActual = monitorPartidas.agregarPartidaSiNoExiste(nombre);
   tipoJugador = JUGADOR_O;
   return true;
 }
@@ -24,13 +24,13 @@ bool Jugador::unirse_partida(Protocolo& protocolo){
   std::string nombre;
   protocolo.recvMensaje(socketJugador, nombre);
 
-  partidaActual = monitor_partidas.buscarPartidaSiExiste(nombre);
+  partidaActual = monitorPartidas.buscarPartidaSiExiste(nombre);
   tipoJugador = JUGADOR_X;
   return true;
 }
 
 void Jugador::listar_partidas(Protocolo& protocolo) {
-  std::string lista = monitor_partidas.listaPartidas();
+  std::string lista = monitorPartidas.listaPartidas();
   protocolo.enviarMensaje(socketJugador, lista);
 }
 

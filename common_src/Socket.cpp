@@ -33,34 +33,37 @@ void Socket::bind(const std::string& port){
                 " [%s]:%i\n", __FILE__,__LINE__);
   }
 
-  fd = socket(server_info->ai_family, server_info->ai_socktype,
-              server_info->ai_protocol);
-  if (fd  == ERROR){
-    freeaddrinfo(server_info);
-    throw ExcepcionSocket("Error en la funcion socket."
-                " [%s]:%i\n", __FILE__,__LINE__);
-  }
-
+  bool conectado = false;
+  addrinfo* ptr;
   int val = 1;
-  status = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
-  if (status == ERROR){
-    freeaddrinfo(server_info);
-    throw ExcepcionSocket("Error en la funcion setsockopt"
-                " previo al bind. [%s]:%i\n", __FILE__,__LINE__);
-  }
 
-  status = ::bind(fd, server_info->ai_addr, server_info->ai_addrlen);
-  freeaddrinfo(server_info);
+  for (ptr = server_info; ptr != NULL && conectado == false;
+    ptr = ptr->ai_next) {
+      fd = socket(server_info->ai_family, server_info->ai_socktype,
+        server_info->ai_protocol);
+        if (fd != ERROR){
+          status = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
+          if (status != ERROR){
+            status = ::bind(fd, server_info->ai_addr, server_info->ai_addrlen);
+            if (status != ERROR){
+              conectado = true;
+            }
+          }
+        }
+        if (conectado == false){
+          ::close(fd);
+        }
+      }
 
-  if (status == ERROR){
-    ::close(fd);
-    throw ExcepcionSocket("Error en la funcion bind."
-                  " [%s]:%i\n", __FILE__,__LINE__);
-  }
+      freeaddrinfo(server_info);
+      if (!conectado){
+        throw ExcepcionSocket("Error al crear aceptador en."
+                " la funcion bind [%s]:%i\n", __FILE__,__LINE__);
+      }
 }
 
 void Socket::listen(){
-  int status = ::listen(fd, 10); //Ver ese 10
+  int status = ::listen(fd, LONG_COLA);
   if (status == ERROR){
     ::close(fd);
     throw ExcepcionSocket("Error al crear la cola de espera."
