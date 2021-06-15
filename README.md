@@ -50,7 +50,7 @@ De esa manera ya queda establecida la coneccion del cliente con el servidor.
 
  El organizador, ademas de la lista de jugadores, crea un monitor de partidas. Es necesario un monitor ya que el mapa donde se almacenan los punteros a partidas es accedido por multiples hilos de forma concurrente, es por eso que se maneja con un monitor que a su vez usa un mutex para evitar race conditions.
 
-Cada vez que el organizador crea un jugador le pasa una referencia a dicho monitor, de esta manera cuandoel  Jugador se comunica con el cliente y  es necesario puede acceder al monitor para crear u obtener una partida. Para que el jugador no deba pasar por el monitor de partidas cada vez que desea modificar la partida a la cual esta conectado, se opto por incluir un atributo de puntero a partida y de esa forma no generar problemas. 
+Cada vez que el organizador crea un jugador le pasa una referencia a dicho monitor, de esta manera cuandoel  Jugador se comunica con el cliente, y  es necesario, puede acceder al monitor para crear u obtener una partida. Para que el jugador no deba pasar por el monitor de partidas cada vez que desea modificar la partida a la cual esta conectado, se opto por incluir un atributo de puntero a partida y de esa forma no generar problemas. 
 
 Como mas de un jugador tendra acceso a una misma partida (ambos tienen puntero a ella) se utilizo mutex y condition_variable para administrar de manera eficiente los turnos y no generar race conditions. Cuando no es el turno del jugador no se le permite obtener el tablero ni realizar jugadas.
 
@@ -75,4 +75,4 @@ Cabe mencionar que cuando el protocolo envia y recibe mensajes utilza el socket 
 - Cuando un jugador intenta crear una partida que ya existe o unirse a una que no existe se corta la conexion.
 - No se considera el caso donde mas de dos clientes se conectan a la misma partida.
 - No se considera el caso donde se juega una posicion ya ocupada.
-- Las partidas son borradas una vez termina el servidor.
+- Las partidas son borradas todas juntas una vez termina el servidor.
