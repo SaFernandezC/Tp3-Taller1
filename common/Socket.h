@@ -3,10 +3,9 @@
 
 #include <iostream>
 #include <string>
-#include "SocketException.h"
+#include "ExcepcionSocket.h"
 
 class Socket{
-
   private:
     int fd;
 
@@ -76,12 +75,9 @@ class Socket{
     * Constructor, asigna al socket el fd recibido
     * como parametro
     */
-    Socket(int fd);
+    explicit Socket(int fd);
     Socket(const Socket&) = delete;
     Socket& operator=(const Socket&) = delete;
-
-
-
 };
 
 #endif

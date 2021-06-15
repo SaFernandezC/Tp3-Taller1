@@ -32,6 +32,8 @@ class Jugador: public Thread{
     bool crear_partida(Protocolo& protocolo);
     bool unirse_partida(Protocolo& protocolo);
     void listar_partidas(Protocolo& protocolo);
+    void entrarAPartida(Protocolo& protocolo);
+    void jugarPartida(Protocolo& protocolo);
 };
 
 #endif

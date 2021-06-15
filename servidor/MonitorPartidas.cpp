@@ -1,27 +1,24 @@
 #include "MonitorPartidas.h"
 
-
-
 MonitorPartidas::MonitorPartidas(){}
 
-Partida* MonitorPartidas::agregarPartida(std::string& nombre){
+Partida* MonitorPartidas::agregarPartidaSiNoExiste(std::string& nombre){
   std::lock_guard<std::mutex> lock(mtx);
+
+  if(partidas.find(nombre) != partidas.end()){
+    throw ExcepcionServer("Se intenta crear una partida que ya existe");
+  }
 
   Partida* nuevaPartida = new Partida();
   partidas[nombre] = nuevaPartida;
   return nuevaPartida;
 }
 
-bool MonitorPartidas::existePartida(std::string& nombre){
+Partida* MonitorPartidas::buscarPartidaSiExiste(const std::string& nombre){
   std::lock_guard<std::mutex> lock(mtx);
-  if(partidas.find(nombre) != partidas.end()){
-    return true;
+  if(partidas.find(nombre) == partidas.end()){
+    throw ExcepcionServer("Se intenta unir a una partida que no existe");
   }
-  return false;
-}
-
-Partida* MonitorPartidas::buscarPartida(const std::string& nombre){
-  std::lock_guard<std::mutex> lock(mtx);
   return partidas[nombre];
 }
 
@@ -38,13 +35,6 @@ std::string MonitorPartidas::listaPartidas(){
   }
   return lista;
 }
-
-void MonitorPartidas::eliminarPartida(const std::string& nombre){
-  std::lock_guard<std::mutex> lock(mtx);
-  delete(partidas[nombre]);
-  partidas.erase(nombre);
-}
-
 
 MonitorPartidas::~MonitorPartidas(){
   std::map<std::string, Partida*>::const_iterator it;

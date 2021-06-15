@@ -2,6 +2,7 @@
 #define _MONITOR_PARTIDAS_H
 
 #include "Partida.h"
+#include "ExcepcionServer.h"
 #include <mutex>
 #include <string>
 #include <map>
@@ -21,20 +22,15 @@ class MonitorPartidas{
 
     MonitorPartidas();
 
-    Partida* agregarPartida(std::string& nombre);
+    Partida* agregarPartidaSiNoExiste(std::string& nombre);
 
-    bool existePartida(std::string& nombre);
-
-    Partida* buscarPartida(const std::string& nombre); //Ver si uso puntero o referencia
+    Partida* buscarPartidaSiExiste(const std::string& nombre);
 
     std::string listaPartidas();
 
-    void eliminarPartida(const std::string& nombre);
+    // void eliminarPartida(const std::string& nombre);VER SI LA IMPLEMENTO O NO
 
     ~MonitorPartidas();
-
-
-
 };
 
 #endif

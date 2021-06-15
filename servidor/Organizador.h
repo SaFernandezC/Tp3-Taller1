@@ -5,7 +5,7 @@
 #include "Jugador.h"
 #include "../common/Socket.h"
 #include "MonitorPartidas.h"
-#include "ServerException.h"
+#include "ExcepcionServer.h"
 #include <vector>
 
 

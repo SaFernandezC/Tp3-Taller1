@@ -1,5 +1,5 @@
 #include "Listener.h"
-// #include <syslog>
+#include <syslog.h>
 
 Listener::Listener(std::string& port){
   accepter.bind(port);
@@ -13,14 +13,15 @@ void Listener::run(){
       Socket cliente = accepter.accept();
       organizador.agregarJugador(std::move(cliente));
     }
-  } catch(std::exception& e){ //Puede ser socket o server exception
-    std::cout << e.what() << std::endl;
-    // syslog(LOG_INFO, "Error: %s", e.what());
+  } catch(const ExcepcionSocket& e){
+    throw;
+  }catch(const ExcepcionServer& e){
+    throw;
   }
 }
 
 void Listener::stop(){
-  accepter.shutdown(); //De aca sale el invalid_argument
+  accepter.shutdown();
   seguirAceptando = false;
 }
 

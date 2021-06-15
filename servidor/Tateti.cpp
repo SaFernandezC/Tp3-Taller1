@@ -1,14 +1,17 @@
 #include "Tateti.h"
 
 #define VACIO ' '
+#define MAX_FIL 3
+#define MAX_COL 3
+#define CANT_POSICIONES 9
 
 Tateti::Tateti(){
-  for (size_t i = 0; i < 3; i++) {
-    for (size_t j = 0; j < 3; j++) {
+  for (size_t i = 0; i < MAX_FIL; i++) {
+    for (size_t j = 0; j < MAX_COL; j++) {
       tablero[i][j] = VACIO;
     }
   }
-  posicionesLibres = 9;
+  posicionesLibres = CANT_POSICIONES;
   ganador = VACIO;
   juegoTerminado = false;
 }

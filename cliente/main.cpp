@@ -1,8 +1,12 @@
 #include <iostream>
+#include <string>
+#include <syslog.h>
 #include "Cliente.h"
 
+#define ARGC_ESPERADOS 3
+
 int main(int argc, char const *argv[]) {
-  if (argc != 3) {
+  if (argc != ARGC_ESPERADOS) {
     std::cout << "Para ejecutar --> ./client <host> <port>" << std::endl;
     return -1;
   }
@@ -13,13 +17,14 @@ int main(int argc, char const *argv[]) {
   try{
     Cliente cliente(host, port);
     cliente.run();
-  } catch (const SocketException& e){
-    std::cout << e.what() << std::endl;
-  } catch (std::exception& e){
-    std::cout << e.what() << std::endl;
-  } catch (...){
-    std::cout << "Error desconocido" << std::endl;
+  } catch(const ExcepcionSocket& e){
+    syslog(LOG_INFO, "Error: %s", e.what());
+  } catch(std::exception& e){
+    syslog(LOG_INFO, "Error: %s", e.what());
+  } catch(...){
+    syslog(LOG_INFO, "Error desconocido\n");
   }
 
+  closelog();
   return 0;
 }

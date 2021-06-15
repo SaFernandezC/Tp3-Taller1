@@ -6,6 +6,7 @@
 #include <condition_variable>
 
 #include "Tateti.h"
+#include "ExcepcionServer.h"
 
 class Partida{
 

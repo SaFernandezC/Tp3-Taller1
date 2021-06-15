@@ -14,8 +14,7 @@ class Thread {
 
     void join();
 
-    virtual void run() = 0;   //Virtual puro para
-                          //forzar que lo defina cada clase hija
+    virtual void run() = 0;
 
     virtual ~Thread();
 
