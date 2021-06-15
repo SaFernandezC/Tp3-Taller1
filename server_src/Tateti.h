@@ -21,7 +21,7 @@ class Tateti{
 
     /*
     * Realiza la jugada en el tablero y luego determina
-    *si la partida termino y si hay algun ganador o no
+    *si la partida termino y si hay algun ganador o no,
     *modificando los atributos ganador y juegoTerminado.
     */
     void realizarJugada(const char& caracter, int fil, int col);
@@ -77,6 +77,9 @@ class Tateti{
     * la partida
     */
     void chequearFil(const int& fil);
+
+    Tateti(const Tateti&) = delete;
+    Tateti& operator=(const Tateti&) = delete;
 };
 
 #endif

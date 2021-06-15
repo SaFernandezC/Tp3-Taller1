@@ -14,6 +14,10 @@ class Listener: public Thread{
     Organizador organizador;
 
   public:
+    /*
+    * Constructor. Realiza el bind y el listen
+    * en con el sock aceptador.
+    */
     explicit Listener(const std::string& port);
 
     /*
@@ -29,7 +33,14 @@ class Listener: public Thread{
     */
     void stop();
 
+    /*
+    * Destructor. Hace close del aceptador y join al hilo.
+    */
     ~Listener();
+
+  private:
+    Listener(const Listener&) = delete;
+    Listener& operator=(const Listener&) = delete;
 };
 
 #endif

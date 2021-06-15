@@ -64,6 +64,10 @@ class Protocolo{
     * Destructor
     */
     ~Protocolo();
+
+  private:
+    Protocolo(const Protocolo&) = delete;
+    Protocolo& operator=(const Protocolo&) = delete;
 };
 
 #endif

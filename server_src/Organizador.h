@@ -35,10 +35,13 @@ class Organizador{
 
   private:
     /*
-    * Limpia, haciendo los delete y join correspondientes
+    * Limpia, haciendo los delete y join correspondientes,
     * los jugadores que ya no estan corriendo.
     */
     void limpiarJugadoresMuertos();
+
+    Organizador(const Organizador&) = delete;
+    Organizador& operator=(const Organizador&) = delete;
 };
 
 #endif

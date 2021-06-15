@@ -13,7 +13,7 @@
 class Jugador: public Thread{
   private:
     Socket socketJugador;
-    MonitorPartidas& monitorPrtidas;
+    MonitorPartidas& monitorPartidas;
     Partida* partidaActual;
     char tipoJugador;
     std::atomic<bool> estaCorriendo;
@@ -82,6 +82,9 @@ class Jugador: public Thread{
     * la partida para realizar las jugadas y obtener el tablero.
     */
     void jugarPartida(Protocolo& protocolo);
+
+    Jugador(const Jugador&) = delete;
+    Jugador& operator=(const Jugador&) = delete;
 };
 
 #endif

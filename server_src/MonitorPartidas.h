@@ -43,6 +43,10 @@ class MonitorPartidas{
     * Destructor. Hace el delete de todas las partidas del map;
     */
     ~MonitorPartidas();
+
+  private:
+    MonitorPartidas(const MonitorPartidas&) = delete;
+    MonitorPartidas& operator=(const MonitorPartidas&) = delete;
 };
 
 #endif

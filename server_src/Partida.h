@@ -8,9 +8,6 @@
 #include "Tateti.h"
 #include "ExcepcionServer.h"
 
-//Todos los metodos lanzan las excepciones correspondientes
-//en caso de error
-
 class Partida{
   private:
     std::mutex mtx;
@@ -39,7 +36,7 @@ class Partida{
 
     /*
     * Cuando es el turno del jugador realiza la jugada indicada,
-    * de lo contrario esperaa que se le notifique el cambio de turno.
+    * de lo contrario espera a que se le notifique el cambio de turno.
     * Luego de jugar se hace el cambio de turno y se le notifica al otro usuario
     * de la partida.
     */
@@ -56,6 +53,9 @@ class Partida{
     * segun corresponda
     */
     void cambiarTurno(const char& tipo_jugador);
+
+    Partida(const Partida&) = delete;
+    Partida& operator=(const Partida&) = delete;
 };
 
 #endif

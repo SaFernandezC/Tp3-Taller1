@@ -60,7 +60,7 @@ void Socket::bind(const std::string& port){
 }
 
 void Socket::listen(){
-  int status = ::listen(fd, 10); //Ver ese 10
+  int status = ::listen(fd, LONG_COLA);
   if (status == ERROR){
     ::close(fd);
     throw ExcepcionSocket("Error al crear la cola de espera."

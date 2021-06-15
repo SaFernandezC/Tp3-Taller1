@@ -55,6 +55,10 @@ class Analizador{
     * Destructor
     */
     ~Analizador();
+
+  private:
+    Analizador(const Analizador&) = delete;
+    Analizador& operator=(const Analizador&) = delete;
 };
 
 #endif
