@@ -1,4 +1,4 @@
-# Trabajo Practico 2 - Taller de programacion I
+# Trabajo Practico 3 - Taller de programacion I
 
 **Nombre:**  Santiago Pablo Fernandez Caruso
 
@@ -20,7 +20,7 @@ El presente trabajo consta de la implementacion de un juego tateti multijugador 
 
 A continuacion se presenta un diagrama de clases para ilustrar el modelo del lado del cliente.
 
-![](/home/santiago/Escritorio/Fiuba/Taller I/Tp3-Taller/img/clasesCliente.png)
+![](img/clasesCliente.png)
 
 Se omiten los metodos del analizador, del protocolo y del socket para facilitar la lectura.
 
@@ -32,7 +32,7 @@ Como vemos cada cliente cuenta con su propio socket a traves del cual se conecta
 
 A continuacion se presenta un diagrama de clases para ilustrar el modelo del lado del server.
 
-![](/home/santiago/Escritorio/Fiuba/Taller I/Tp3-Taller/img/clasesServer.png)
+![](img/clasesServer.png)
 
 Se omiten los metodos para facilitar lectura.
 
@@ -64,7 +64,7 @@ Para lo que es el juego en si, cada partida tiene un atributo juego del tipo Tat
 
 A continuacion un diagrama de secuencia del lado del servidor de un jugador creando una partida.
 
-![](/home/santiago/Escritorio/Fiuba/Taller I/Tp3-Taller/img/SecuenciaConectar.png)
+![](img/SecuenciaConectar.png)
 
 Cabe mencionar que cuando el protocolo envia y recibe mensajes utilza el socket del jugador (no se icluyo en el diagrama para facilitar la lectura). El proceso para unirse a las partidas es muy similar.
 
