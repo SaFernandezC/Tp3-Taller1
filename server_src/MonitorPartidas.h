@@ -15,7 +15,6 @@ class MonitorPartidas{
     std::map<std::string, Partida*> partidas;
     std::mutex mtx;
 
-
   public:
     /*
     * Constructor

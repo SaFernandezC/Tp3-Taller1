@@ -9,7 +9,7 @@
 
 class Listener: public Thread{
   private:
-    Socket accepter;
+    Socket aceptador;
     std::atomic<bool> seguirAceptando;
     Organizador organizador;
 

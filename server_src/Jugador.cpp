@@ -5,15 +5,15 @@
 #define VACIO ' '
 
 Jugador::Jugador(Socket player_sock, MonitorPartidas& monitor):
-                socket_jugador(std::move(player_sock)),
-                monitor_partidas(monitor), estaCorriendo(true){
+                socketJugador(std::move(player_sock)),
+                monitorPartidas(monitor), estaCorriendo(true){
   partidaActual = NULL;
   tipoJugador = VACIO;
 }
 
 bool Jugador::crear_partida(Protocolo& protocolo){
   std::string nombre;
-  protocolo.recvMensaje(socket_jugador, nombre);
+  protocolo.recvMensaje(socketJugador, nombre);
 
   partidaActual = monitor_partidas.agregarPartidaSiNoExiste(nombre);
   tipoJugador = JUGADOR_O;
@@ -22,7 +22,7 @@ bool Jugador::crear_partida(Protocolo& protocolo){
 
 bool Jugador::unirse_partida(Protocolo& protocolo){
   std::string nombre;
-  protocolo.recvMensaje(socket_jugador, nombre);
+  protocolo.recvMensaje(socketJugador, nombre);
 
   partidaActual = monitor_partidas.buscarPartidaSiExiste(nombre);
   tipoJugador = JUGADOR_X;
@@ -31,14 +31,14 @@ bool Jugador::unirse_partida(Protocolo& protocolo){
 
 void Jugador::listar_partidas(Protocolo& protocolo) {
   std::string lista = monitor_partidas.listaPartidas();
-  protocolo.enviarMensaje(socket_jugador, lista);
+  protocolo.enviarMensaje(socketJugador, lista);
 }
 
 void Jugador::entrarAPartida(Protocolo& protocolo){
   bool en_partida = false;
   char tipo_accion;
   while (!en_partida){
-    protocolo.recvTipoAccion(socket_jugador, tipo_accion);
+    protocolo.recvTipoAccion(socketJugador, tipo_accion);
 
     if (tipo_accion == CODIGO_LISTAR){
       listar_partidas(protocolo);
@@ -55,19 +55,19 @@ void Jugador::jugarPartida(Protocolo& protocolo){
   tablero = partidaActual->obtenerTablero(tipoJugador);
 
   while (partidaActual->enJuego() == true){
-    protocolo.enviarMensaje(socket_jugador, tablero);
+    protocolo.enviarMensaje(socketJugador, tablero);
 
     char tipo_accion;
     char col, fil;
 
-    protocolo.recvTipoAccion(socket_jugador, tipo_accion);
-    protocolo.recvJugada(socket_jugador, col, fil);
+    protocolo.recvTipoAccion(socketJugador, tipo_accion);
+    protocolo.recvJugada(socketJugador, col, fil);
 
     partidaActual->jugar(tipoJugador, col, fil);
     tablero = partidaActual->obtenerTablero(tipoJugador);
   }
 
-  protocolo.enviarMensaje(socket_jugador, tablero);
+  protocolo.enviarMensaje(socketJugador, tablero);
 }
 
 void Jugador::run(){
@@ -84,8 +84,8 @@ void Jugador::run(){
 
 void Jugador::stop(){
   estaCorriendo = false;
-  socket_jugador.shutdown();
-  socket_jugador.close();
+  socketJugador.shutdown();
+  socketJugador.close();
 }
 
 bool Jugador::corriendo() const{
@@ -93,5 +93,5 @@ bool Jugador::corriendo() const{
 }
 
 Jugador::~Jugador(){
-  socket_jugador.close();
+  socketJugador.close();
 }

@@ -21,7 +21,7 @@ class Protocolo{
     * Recibe mediante el socket 1byte correspondiente al
     * codigo de accion a realizar
     */
-    void recvTipoAccion(Socket& socket, char& tipo_accion);
+    void recvTipoAccion(Socket& socket, char& tipoAccion);
 
     /*
     * Envia mediante el socket 1 byte con el codigo de crear
@@ -53,7 +53,7 @@ class Protocolo{
     *jugada y luego luego envia por el socket 1 byte con la jugada
     * col|fil
     */
-    void enviarJugada(Socket& socket, char& tipo_accion, char& col, char& fil);
+    void enviarJugada(Socket& socket, char& tipoAccion, char& col, char& fil);
 
     /*
     * Recibe mediante el socket 1 byte con la jugada

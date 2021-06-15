@@ -47,13 +47,13 @@ class Tateti{
     /*
     * Transforma el tablero a un string.
     */
-    void construirTablero(std::string& tablero_aux);
+    void construirTablero(std::string& tableroAux);
 
     /*
     * Agrega resultado de la partida al final del string del tablero
     * dependiendo del tipoJugador.
     */
-    void agregarResultado(std::string& tablero_aux, const char& tipoJugador);
+    void agregarResultado(std::string& tableroAux, const char& tipoJugador);
 
     /*
     * LLama a chequearFil, chequearCol y chequearDiagonales.

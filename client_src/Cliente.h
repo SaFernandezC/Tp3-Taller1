@@ -11,7 +11,7 @@
 
 class Cliente{
   private:
-    Socket client_socket;
+    Socket socketCliente;
 
   public:
     /*
@@ -43,7 +43,7 @@ class Cliente{
     * se juega la partida y no hay ganador.
     */
     void jugar(Protocolo& protocolo, Analizador& analizador);
-    
+
     Cliente(const Cliente&)=delete;
     Cliente& operator=(const Cliente&)=delete;
 };

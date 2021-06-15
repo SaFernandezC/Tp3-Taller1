@@ -73,7 +73,7 @@ void Tateti::realizarJugada(const char& caracter, int fil, int col){
   }
 }
 
-void Tateti::construirTablero(std::string& tablero_aux){
+void Tateti::construirTablero(std::string& tableroAux){
   char buffer[200];
   snprintf(buffer,sizeof(buffer), "    1 . 2 . 3 .\n"
 					"  +---+---+---+\n"
@@ -100,12 +100,12 @@ void Tateti::agregarResultado(std::string& auxiliar, const char& tipoJugador) {
 }
 
 std::string Tateti::obtenerTablero(const char& tipoJugador){
-  std::string tablero_aux;
-  construirTablero(tablero_aux);
+  std::string tableroAux;
+  construirTablero(tableroAux);
   if (juegoTerminado){
-    agregarResultado(tablero_aux, tipoJugador);
+    agregarResultado(tableroAux, tipoJugador);
   }
-  return tablero_aux;
+  return tableroAux;
 }
 
 Tateti::~Tateti(){}

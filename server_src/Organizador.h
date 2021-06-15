@@ -13,7 +13,7 @@
 class Organizador{
   private:
       std::vector<Jugador*> jugadores;
-      MonitorPartidas monitor_partidas;
+      MonitorPartidas monitorPartidas;
 
   public:
     /*

@@ -12,8 +12,8 @@
 
 class Jugador: public Thread{
   private:
-    Socket socket_jugador;
-    MonitorPartidas& monitor_partidas;
+    Socket socketJugador;
+    MonitorPartidas& monitorPrtidas;
     Partida* partidaActual;
     char tipoJugador;
     std::atomic<bool> estaCorriendo;
